@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
-import { TransportType } from '@/types';
 import { transportLabels } from '@/data/routes';
-import { routes as allRoutes } from '@/data/routes';
-import { Bus, Zap, TrainFront, Upload, X, CheckCircle, ImageIcon } from 'lucide-react';
+import { Bus, Zap, TrainFront, Upload, X, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -42,16 +40,11 @@ const availableTransports: ('bus' | 'trolleybus' | 'tram')[] = ['bus', 'trolleyb
 export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
   const { toast } = useToast();
   const [transportType, setTransportType] = useState<'bus' | 'trolleybus' | 'tram' | null>(null);
-  const [routeNumber, setRouteNumber] = useState<string | null>(null);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const routes = transportType 
-    ? allRoutes.filter(r => r.transportType === transportType)
-    : [];
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,7 +63,7 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
     setPhotoPreview(null);
   };
 
-  const isValid = transportType && routeNumber && date && description.trim() && photo;
+  const isValid = transportType && date && description.trim() && photo;
 
   const handleSubmit = async () => {
     if (!isValid) return;
@@ -87,7 +80,6 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
 
     // Reset form
     setTransportType(null);
-    setRouteNumber(null);
     setDate(undefined);
     setDescription('');
     setPhoto(null);
@@ -115,10 +107,7 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
             return (
               <button
                 key={type}
-                onClick={() => {
-                  setTransportType(type);
-                  setRouteNumber(null);
-                }}
+                onClick={() => setTransportType(type)}
                 className={cn(
                   'flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all',
                   isSelected 
@@ -133,29 +122,6 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
           })}
         </div>
       </div>
-
-      {/* Route Selection */}
-      {transportType && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">Маршрут</label>
-          <div className="flex flex-wrap gap-2">
-            {routes.map((route) => (
-              <button
-                key={route.id}
-                onClick={() => setRouteNumber(route.number)}
-                className={cn(
-                  'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
-                  routeNumber === route.number
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                )}
-              >
-                {route.number}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Date Selection */}
       <div className="space-y-2">

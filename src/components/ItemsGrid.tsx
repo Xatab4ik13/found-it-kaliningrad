@@ -39,13 +39,14 @@ export const ItemsGrid = ({
     // Симуляция загрузки с сервера
     const timer = setTimeout(() => {
       const dateStr = format(date, 'yyyy-MM-dd');
-      const filtered = getFilteredItems(transportType, routeNumber, dateStr);
+      // Route is ignored - filter by transport + date only
+      const filtered = getFilteredItems(transportType, dateStr);
       setItems(filtered);
       setLoading(false);
     }, 800);
     
     return () => clearTimeout(timer);
-  }, [transportType, routeNumber, date]);
+  }, [transportType, date]);
 
   const dateFormatted = format(date, 'd MMMM yyyy', { locale: ru });
 
