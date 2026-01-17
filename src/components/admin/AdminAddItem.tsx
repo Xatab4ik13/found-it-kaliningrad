@@ -147,17 +147,17 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
       <div className="space-y-2">
         <label className="text-sm font-medium text-foreground">Фото</label>
         {photoPreview ? (
-          <div className="relative">
+          <div className="relative w-32 h-24">
             <img 
               src={photoPreview} 
               alt="Preview" 
-              className="w-full h-48 object-cover rounded-lg border border-border"
+              className="w-full h-full object-cover rounded-lg border border-border"
             />
             <button
               onClick={removePhoto}
-              className="absolute top-2 right-2 p-1.5 bg-destructive text-destructive-foreground rounded-full"
+              className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3 h-3" />
             </button>
           </div>
         ) : (

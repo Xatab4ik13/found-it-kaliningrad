@@ -79,9 +79,15 @@ export const ItemsGrid = ({
       
       <div className="flex-1 overflow-auto px-4 pb-4">
         {loading ? (
-          <div className="grid grid-cols-2 gap-3">
-            {[1, 2, 3, 4].map((i) => (
-              <ItemSkeleton key={i} />
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex-shrink-0 w-36">
+                <div className="aspect-square skeleton-shimmer rounded-lg" />
+                <div className="mt-2 space-y-1">
+                  <div className="h-3 skeleton-shimmer w-3/4" />
+                  <div className="h-2 skeleton-shimmer w-1/2" />
+                </div>
+              </div>
             ))}
           </div>
         ) : items.length === 0 ? (
@@ -97,14 +103,14 @@ export const ItemsGrid = ({
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
             {items.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onSelectItem(item)}
-                className="item-card text-left"
+                className="flex-shrink-0 w-36 item-card text-left"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                <div className="aspect-square overflow-hidden bg-muted rounded-lg">
                   <img 
                     src={item.photo} 
                     alt={item.description}
@@ -114,11 +120,11 @@ export const ItemsGrid = ({
                     }}
                   />
                 </div>
-                <div className="p-3 space-y-1">
-                  <p className="text-sm font-medium text-foreground line-clamp-2">
+                <div className="p-2 space-y-0.5">
+                  <p className="text-xs font-medium text-foreground line-clamp-2">
                     {item.description}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-[10px] text-muted-foreground">
                     {transportLabels[item.transportType]} № {item.routeNumber}
                   </p>
                 </div>
@@ -126,6 +132,10 @@ export const ItemsGrid = ({
             ))}
           </div>
         )}
+        
+        <p className="text-xs text-muted-foreground text-center mt-6 px-4">
+          Если забытая вещь отсутствует — значит в бюро забытых вещей не поступала
+        </p>
       </div>
     </div>
   );
