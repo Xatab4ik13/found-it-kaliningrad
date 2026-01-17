@@ -76,15 +76,14 @@ export const mockFoundItems: FoundItem[] = [
   },
 ];
 
+// Filter by transport type and date only (route is ignored)
 export const getFilteredItems = (
   transportType: TransportType,
-  routeNumber: string,
   date: string
 ): FoundItem[] => {
   return mockFoundItems.filter(
     item =>
       item.transportType === transportType &&
-      item.routeNumber === routeNumber &&
       item.date === date
   );
 };
