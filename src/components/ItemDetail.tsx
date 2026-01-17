@@ -26,7 +26,7 @@ export const ItemDetail = ({ item, onBack }: ItemDetailProps) => {
       </div>
       
       <div className="flex-1 overflow-auto">
-        <div className="aspect-[4/3] overflow-hidden bg-muted mx-4 rounded-xl">
+        <div className="aspect-[16/10] max-h-48 overflow-hidden bg-muted mx-4 rounded-xl">
           <img 
             src={item.photo} 
             alt={item.description}
