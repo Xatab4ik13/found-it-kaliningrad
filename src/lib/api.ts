@@ -3,14 +3,15 @@ import { FoundItem, TransportType } from '@/types';
 const API_URL = 'http://109.73.195.164';
 
 // Преобразование данных с сервера в формат фронтенда
+// Бэкенд возвращает snake_case, фронтенд использует camelCase
 const mapServerItem = (item: any): FoundItem => ({
   id: String(item.id),
   photo: `${API_URL}/photos/${item.photo}`,
   description: item.description,
   date: item.date,
-  routeNumber: item.routeNumber,
-  transportType: item.transportType as TransportType,
-  pickupAddress: item.pickupAddress,
+  routeNumber: item.route_number,
+  transportType: item.transport_type as TransportType,
+  pickupAddress: item.pickup_address,
 });
 
 // Получить находки с фильтрацией
