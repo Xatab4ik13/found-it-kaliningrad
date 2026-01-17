@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { transportLabels } from '@/data/routes';
+import { addItem } from '@/lib/api';
 import { Bus, Zap, TrainFront, Upload, X, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
@@ -40,6 +42,8 @@ const availableTransports: ('bus' | 'trolleybus' | 'tram')[] = ['bus', 'trolleyb
 export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
   const { toast } = useToast();
   const [transportType, setTransportType] = useState<'bus' | 'trolleybus' | 'tram' | null>(null);
+  const [routeNumber, setRouteNumber] = useState('');
+  const [pickupAddress, setPickupAddress] = useState('ул. Советская, 5 — Диспетчерская');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
@@ -63,30 +67,47 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
     setPhotoPreview(null);
   };
 
-  const isValid = transportType && date && description.trim() && photo;
+  const isValid = transportType && date && description.trim() && photo && routeNumber.trim();
 
   const handleSubmit = async () => {
-    if (!isValid) return;
+    if (!isValid || !transportType || !date || !photo) return;
     
     setIsSubmitting(true);
 
-    // TODO: Replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const formData = new FormData();
+      formData.append('photo', photo);
+      formData.append('description', description.trim());
+      formData.append('date', format(date, 'yyyy-MM-dd'));
+      formData.append('routeNumber', routeNumber.trim());
+      formData.append('transportType', transportType);
+      formData.append('pickupAddress', pickupAddress.trim());
 
-    toast({
-      title: 'Находка опубликована',
-      description: 'Запись успешно добавлена в систему',
-    });
+      await addItem(formData);
 
-    // Reset form
-    setTransportType(null);
-    setDate(undefined);
-    setDescription('');
-    setPhoto(null);
-    setPhotoPreview(null);
-    setIsSubmitting(false);
-    
-    onSuccess();
+      toast({
+        title: 'Находка опубликована',
+        description: 'Запись успешно добавлена в систему',
+      });
+
+      // Reset form
+      setTransportType(null);
+      setRouteNumber('');
+      setDate(undefined);
+      setDescription('');
+      setPhoto(null);
+      setPhotoPreview(null);
+      
+      onSuccess();
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: error instanceof Error ? error.message : 'Не удалось добавить находку',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -123,6 +144,17 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
         </div>
       </div>
 
+      {/* Route Number */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-foreground">Номер маршрута</label>
+        <Input
+          value={routeNumber}
+          onChange={(e) => setRouteNumber(e.target.value)}
+          placeholder="Например: 15"
+          className="bg-card"
+        />
+      </div>
+
       {/* Date Selection */}
       <div className="space-y-2">
         <label className="text-sm font-medium text-foreground">Дата находки</label>
@@ -141,6 +173,17 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
             Выбрано: {format(date, 'd MMMM yyyy', { locale: ru })}
           </p>
         )}
+      </div>
+
+      {/* Pickup Address */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-foreground">Адрес получения</label>
+        <Input
+          value={pickupAddress}
+          onChange={(e) => setPickupAddress(e.target.value)}
+          placeholder="Адрес диспетчерской"
+          className="bg-card"
+        />
       </div>
 
       {/* Photo Upload */}

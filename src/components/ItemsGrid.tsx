@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { TransportType, FoundItem } from '@/types';
 import { transportLabels } from '@/data/routes';
-import { getFilteredItems } from '@/data/mockItems';
+import { fetchItems } from '@/lib/api';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
 
 interface ItemsGridProps {
   transportType: TransportType;
@@ -33,19 +32,25 @@ export const ItemsGrid = ({
 }: ItemsGridProps) => {
   const [items, setItems] = useState<FoundItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    // Симуляция загрузки с сервера
-    const timer = setTimeout(() => {
-      const dateStr = format(date, 'yyyy-MM-dd');
-      // Route is ignored - filter by transport + date only
-      const filtered = getFilteredItems(transportType, dateStr);
-      setItems(filtered);
-      setLoading(false);
-    }, 800);
+    const loadItems = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const dateStr = format(date, 'yyyy-MM-dd');
+        const data = await fetchItems(transportType, dateStr);
+        setItems(data);
+      } catch (err) {
+        setError('Ошибка загрузки данных');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    return () => clearTimeout(timer);
+    loadItems();
   }, [transportType, date]);
 
   const dateFormatted = format(date, 'd MMMM yyyy', { locale: ru });
