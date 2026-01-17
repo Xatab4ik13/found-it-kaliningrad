@@ -1,4 +1,5 @@
 import { FoundItem, TransportType } from '@/types';
+import { parseISO, differenceInDays } from 'date-fns';
 
 // Mock data для демонстрации
 export const mockFoundItems: FoundItem[] = [
@@ -76,14 +77,19 @@ export const mockFoundItems: FoundItem[] = [
   },
 ];
 
-// Filter by transport type and date only (route is ignored)
+// Filter by transport type and date range (±3 days from selected date)
 export const getFilteredItems = (
   transportType: TransportType,
   date: string
 ): FoundItem[] => {
-  return mockFoundItems.filter(
-    item =>
-      item.transportType === transportType &&
-      item.date === date
-  );
+  const selectedDate = parseISO(date);
+  
+  return mockFoundItems.filter(item => {
+    if (item.transportType !== transportType) return false;
+    
+    const itemDate = parseISO(item.date);
+    const daysDiff = Math.abs(differenceInDays(selectedDate, itemDate));
+    
+    return daysDiff <= 3;
+  });
 };
