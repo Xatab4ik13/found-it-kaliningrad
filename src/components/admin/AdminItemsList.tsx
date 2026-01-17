@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { transportLabels } from '@/data/routes';
-import { mockFoundItems } from '@/data/mockItems';
+import { fetchAllItems, deleteItem as apiDeleteItem } from '@/lib/api';
 import { FoundItem } from '@/types';
-import { Trash2, AlertCircle, Clock } from 'lucide-react';
+import { Trash2, AlertCircle, Clock, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
@@ -20,28 +20,64 @@ import {
 
 export const AdminItemsList = () => {
   const { toast } = useToast();
-  const [items, setItems] = useState<FoundItem[]>(mockFoundItems);
-  const [deleteItem, setDeleteItem] = useState<FoundItem | null>(null);
+  const [items, setItems] = useState<FoundItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deleteItemState, setDeleteItemState] = useState<FoundItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const loadItems = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchAllItems();
+      setItems(data);
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось загрузить список находок',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadItems();
+  }, []);
+
   const handleDelete = async () => {
-    if (!deleteItem) return;
+    if (!deleteItemState) return;
     
     setIsDeleting(true);
 
-    // TODO: Replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    setItems(prev => prev.filter(item => item.id !== deleteItem.id));
-    
-    toast({
-      title: 'Находка удалена',
-      description: 'Запись и фото успешно удалены',
-    });
-
-    setDeleteItem(null);
-    setIsDeleting(false);
+    try {
+      await apiDeleteItem(deleteItemState.id);
+      setItems(prev => prev.filter(item => item.id !== deleteItemState.id));
+      
+      toast({
+        title: 'Находка удалена',
+        description: 'Запись и фото успешно удалены',
+      });
+    } catch (error) {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось удалить находку',
+        variant: 'destructive',
+      });
+    } finally {
+      setDeleteItemState(null);
+      setIsDeleting(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-16 px-4">
+        <RefreshCw className="w-8 h-8 text-muted-foreground animate-spin" />
+        <p className="text-sm text-muted-foreground">Загрузка...</p>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -65,9 +101,14 @@ export const AdminItemsList = () => {
         <h2 className="text-lg font-semibold text-foreground">
           Опубликованные находки
         </h2>
-        <span className="text-sm text-muted-foreground">
-          {items.length} шт.
-        </span>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={loadItems}>
+            <RefreshCw className="w-4 h-4" />
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            {items.length} шт.
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 text-xs text-muted-foreground">
@@ -102,7 +143,7 @@ export const AdminItemsList = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setDeleteItem(item)}
+              onClick={() => setDeleteItemState(item)}
               className="flex-shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
             >
               <Trash2 className="w-4 h-4" />
@@ -111,7 +152,7 @@ export const AdminItemsList = () => {
         ))}
       </div>
 
-      <AlertDialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
+      <AlertDialog open={!!deleteItemState} onOpenChange={() => setDeleteItemState(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Удалить находку?</AlertDialogTitle>
