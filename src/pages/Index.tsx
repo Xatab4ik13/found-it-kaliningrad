@@ -6,8 +6,10 @@ import { DateSelect } from '@/components/DateSelect';
 import { ItemsGrid } from '@/components/ItemsGrid';
 import { ItemDetail } from '@/components/ItemDetail';
 import { TransportType, Route, FoundItem, SearchState } from '@/types';
+import { transportLabels } from '@/data/routes';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 
-type Screen = 'transport' | 'route' | 'date' | 'items' | 'detail';
+type Screen = 'transport' | 'route' | 'date' | 'items' | 'detail' | 'unavailable';
 
 const Index = () => {
   const [screen, setScreen] = useState<Screen>('transport');
@@ -39,6 +41,11 @@ const Index = () => {
   const handleTransportSelect = (type: TransportType) => {
     setSearchState(prev => ({ ...prev, transportType: type }));
     setScreen('route');
+  };
+
+  const handleUnavailableTransport = (type: TransportType) => {
+    setSearchState(prev => ({ ...prev, transportType: type }));
+    setScreen('unavailable');
   };
 
   const handleRouteSelect = (route: Route) => {
@@ -99,7 +106,40 @@ const Index = () => {
           <TransportSelect
             selected={searchState.transportType}
             onSelect={handleTransportSelect}
+            onUnavailable={handleUnavailableTransport}
           />
+        )}
+
+        {screen === 'unavailable' && searchState.transportType && (
+          <div className="flex flex-col gap-4 p-4">
+            <button
+              onClick={goToTransport}
+              className="flex items-center gap-2 text-primary text-sm font-medium"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Назад
+            </button>
+            
+            <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                <AlertCircle className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-foreground">
+                  {transportLabels[searchState.transportType]}
+                </h3>
+                <p className="text-sm text-muted-foreground max-w-xs">
+                  Данный вид транспорта не обслуживается нашим предприятием
+                </p>
+              </div>
+              <button
+                onClick={goToTransport}
+                className="mt-4 px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium"
+              >
+                Выбрать другой транспорт
+              </button>
+            </div>
+          </div>
         )}
 
         {screen === 'route' && searchState.transportType && (
