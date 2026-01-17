@@ -133,9 +133,11 @@ export const ItemsGrid = ({
           </div>
         )}
         
-        <p className="text-xs text-muted-foreground text-center mt-6 px-4">
-          Если забытая вещь отсутствует — значит в бюро забытых вещей не поступала
-        </p>
+        <div className="mt-6 p-4 bg-muted/50 rounded-xl">
+          <p className="text-sm text-muted-foreground text-center leading-relaxed">
+            Если забытая вещь отсутствует — значит в бюро забытых вещей не поступала
+          </p>
+        </div>
       </div>
     </div>
   );
