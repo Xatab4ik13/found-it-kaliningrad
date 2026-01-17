@@ -1,7 +1,7 @@
 import { FoundItem } from '@/types';
 import { transportLabels } from '@/data/routes';
 import { Button } from '@/components/ui/button';
-import { MapPin, FileText, ArrowLeft } from 'lucide-react';
+import { MapPin, FileText, ArrowLeft, Phone } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
@@ -65,6 +65,21 @@ export const ItemDetail = ({ item, onBack }: ItemDetailProps) => {
                 <p className="text-sm text-muted-foreground">
                   {item.pickupAddress}
                 </p>
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  Телефон для связи:
+                </p>
+                <a 
+                  href="tel:84012300300" 
+                  className="text-sm text-primary hover:underline"
+                >
+                  8 (4012) 300-300
+                </a>
               </div>
             </div>
             
