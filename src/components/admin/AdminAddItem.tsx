@@ -81,6 +81,7 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
       formData.append('description', description.trim());
       formData.append('date', format(date, 'yyyy-MM-dd'));
       formData.append('transportType', transportType);
+      formData.append('routeNumber', '-');
       formData.append('pickupAddress', pickupAddress);
 
       await addItem(formData);
