@@ -1,4 +1,4 @@
-export type TransportType = 'bus' | 'trolleybus' | 'tram';
+export type TransportType = 'bus' | 'trolleybus' | 'tram' | 'airplane' | 'train';
 
 export interface Route {
   id: string;

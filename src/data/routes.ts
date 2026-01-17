@@ -38,4 +38,8 @@ export const transportLabels: Record<TransportType, string> = {
   bus: 'Автобус',
   trolleybus: 'Троллейбус',
   tram: 'Трамвай',
+  airplane: 'Самолёт',
+  train: 'Поезд',
 };
+
+export const unavailableTransports: TransportType[] = ['airplane', 'train'];
