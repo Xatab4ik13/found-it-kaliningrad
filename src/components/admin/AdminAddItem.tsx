@@ -49,7 +49,7 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Статичный адрес получения
-  const pickupAddress = 'ул. Советская, 5 — Диспетчерская';
+  const pickupAddress = 'Калининград, Киевская 17';
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
