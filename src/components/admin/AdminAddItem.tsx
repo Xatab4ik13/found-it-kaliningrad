@@ -42,13 +42,14 @@ const availableTransports: ('bus' | 'trolleybus' | 'tram')[] = ['bus', 'trolleyb
 export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
   const { toast } = useToast();
   const [transportType, setTransportType] = useState<'bus' | 'trolleybus' | 'tram' | null>(null);
-  const [routeNumber, setRouteNumber] = useState('');
-  const [pickupAddress, setPickupAddress] = useState('ул. Советская, 5 — Диспетчерская');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Статичный адрес получения
+  const pickupAddress = 'ул. Советская, 5 — Диспетчерская';
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -67,7 +68,7 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
     setPhotoPreview(null);
   };
 
-  const isValid = transportType && date && description.trim() && photo && routeNumber.trim();
+  const isValid = transportType && date && description.trim() && photo;
 
   const handleSubmit = async () => {
     if (!isValid || !transportType || !date || !photo) return;
@@ -79,9 +80,8 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
       formData.append('photo', photo);
       formData.append('description', description.trim());
       formData.append('date', format(date, 'yyyy-MM-dd'));
-      formData.append('routeNumber', routeNumber.trim());
       formData.append('transportType', transportType);
-      formData.append('pickupAddress', pickupAddress.trim());
+      formData.append('pickupAddress', pickupAddress);
 
       await addItem(formData);
 
@@ -92,7 +92,6 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
 
       // Reset form
       setTransportType(null);
-      setRouteNumber('');
       setDate(undefined);
       setDescription('');
       setPhoto(null);
@@ -144,16 +143,6 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
         </div>
       </div>
 
-      {/* Route Number */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Номер маршрута</label>
-        <Input
-          value={routeNumber}
-          onChange={(e) => setRouteNumber(e.target.value)}
-          placeholder="Например: 15"
-          className="bg-card"
-        />
-      </div>
 
       {/* Date Selection */}
       <div className="space-y-2">
@@ -175,16 +164,6 @@ export const AdminAddItem = ({ onSuccess }: AdminAddItemProps) => {
         )}
       </div>
 
-      {/* Pickup Address */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Адрес получения</label>
-        <Input
-          value={pickupAddress}
-          onChange={(e) => setPickupAddress(e.target.value)}
-          placeholder="Адрес диспетчерской"
-          className="bg-card"
-        />
-      </div>
 
       {/* Photo Upload */}
       <div className="space-y-2">
