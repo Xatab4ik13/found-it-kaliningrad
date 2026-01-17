@@ -98,10 +98,10 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen max-h-screen bg-background">
+    <div className="flex flex-col min-h-0 h-full bg-background">
       <Header />
       
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 overflow-y-auto">
         {screen === 'transport' && (
           <TransportSelect
             selected={searchState.transportType}
