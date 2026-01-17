@@ -1,6 +1,6 @@
 import { FoundItem, TransportType } from '@/types';
 
-const API_URL = 'http://109.73.195.164';
+const API_URL = 'https://findtrans.ru';
 
 // Преобразование данных с сервера в формат фронтенда
 const mapServerItem = (item: any): FoundItem => ({
