@@ -9,7 +9,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '7',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '2',
@@ -18,7 +18,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '7',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '3',
@@ -27,7 +27,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '1',
     transportType: 'trolleybus',
-    pickupAddress: 'пр. Победы, 42 (Троллейбусное депо)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '4',
@@ -36,7 +36,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '3',
     transportType: 'tram',
-    pickupAddress: 'ул. Судостроительная, 15 (Трамвайное депо)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '5',
@@ -45,7 +45,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-16',
     routeNumber: '2А',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '6',
@@ -54,7 +54,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '7',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '7',
@@ -63,7 +63,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '7',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
   {
     id: '8',
@@ -72,7 +72,7 @@ export const mockFoundItems: FoundItem[] = [
     date: '2026-01-17',
     routeNumber: '1',
     transportType: 'bus',
-    pickupAddress: 'ул. Киевская, 1 (Диспетчерская автопарка)',
+    pickupAddress: 'Калининград, ул. Киевская 17',
   },
 ];
 
