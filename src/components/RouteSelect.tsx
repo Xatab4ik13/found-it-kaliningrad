@@ -76,6 +76,20 @@ export const RouteSelect = ({ transportType, onSelect, onBack }: RouteSelectProp
             ))
           )}
         </div>
+        
+        <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border/50">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Если маршрут не найден, значит нашим предприятием не обслуживается. 
+            Необходимо обратиться в Центр организации дорожного движения 
+            и пассажирских перевозок по номеру{' '}
+            <a 
+              href="tel:+74012338868" 
+              className="text-primary font-medium hover:underline"
+            >
+              +7 (4012) 338-868
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
