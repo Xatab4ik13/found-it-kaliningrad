@@ -1,7 +1,8 @@
-import { Bus, Zap, TrainFront, Plane, Train } from 'lucide-react';
+import { Bus, TrainFront, Plane, Train } from 'lucide-react';
 import { TransportType } from '@/types';
 import { transportLabels, unavailableTransports } from '@/data/routes';
 import { cn } from '@/lib/utils';
+import { TrolleybusIcon } from '@/components/icons/TrolleybusIcon';
 
 interface TransportSelectProps {
   selected: TransportType | null;
@@ -20,7 +21,7 @@ const transportConfig: Record<TransportType, {
     bgClass: 'bg-primary/10',
   },
   trolleybus: { 
-    icon: Zap, 
+    icon: TrolleybusIcon, 
     colorClass: 'text-emerald-600 dark:text-emerald-400',
     bgClass: 'bg-emerald-500/10',
   },
